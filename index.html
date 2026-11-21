@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>To-Do List</title>
+  <meta name="description" content="A simple to-do list: add, finish and delete tasks. Saved in your browser.">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -17,15 +18,18 @@
     </form>
 
     <div class="filters" role="group" aria-label="Filter tasks">
-      <button type="button" class="filter active" data-filter="all">All</button>
-      <button type="button" class="filter" data-filter="active">Active</button>
-      <button type="button" class="filter" data-filter="done">Done</button>
+      <button type="button" class="filter active" data-filter="all" aria-pressed="true">All</button>
+      <button type="button" class="filter" data-filter="active" aria-pressed="false">Active</button>
+      <button type="button" class="filter" data-filter="done" aria-pressed="false">Done</button>
     </div>
 
     <ul id="task-list" class="task-list"></ul>
 
     <p id="empty-message" class="empty">No tasks yet. Add one above!</p>
-    <p id="counter" class="counter"></p>
+    <div class="footer">
+      <p id="counter" class="counter"></p>
+      <button type="button" id="clear-done" class="clear-btn" hidden>Clear done</button>
+    </div>
   </main>
 
   <script src="script.js"></script>

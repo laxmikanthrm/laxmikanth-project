@@ -7,7 +7,8 @@ A simple to-do list web app built with plain HTML, CSS and JavaScript for the CM
 ## Features
 - Add a task
 - Tick a task as done
-- Delete a task
+- Edit a task (Edit button or double-click)
+- Delete a task, or clear all finished tasks at once
 - Tasks stay after the page is refreshed (saved in the browser's `localStorage`)
 - Optional extra: filter tasks by **All / Active / Done**
 

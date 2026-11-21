@@ -89,3 +89,44 @@ button {
   overflow: hidden;
   clip: rect(0 0 0 0);
 }
+
+[hidden] { display: none !important; }
+
+.icon-btn {
+  background: transparent;
+  padding: 4px 8px;
+  font-size: 0.9rem;
+}
+.edit-btn { color: #2563eb; }
+.edit-btn:hover { background: #dbeafe; }
+
+.edit-input {
+  flex: 1;
+  min-width: 0;
+  padding: 6px 8px;
+  font: inherit;
+  border: 1px solid #2563eb;
+  border-radius: 6px;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+}
+.footer .counter { margin: 0; }
+.clear-btn {
+  background: transparent;
+  color: #64748b;
+  font-size: 0.9rem;
+  padding: 4px 8px;
+}
+.clear-btn:hover { color: #dc2626; background: #fee2e2; }
+
+@media (max-width: 480px) {
+  body { padding: 16px; }
+  .app { padding: 16px; }
+  .task { gap: 6px; }
+  .icon-btn { padding: 4px 6px; }
+}
