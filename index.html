@@ -18,9 +18,9 @@
     </form>
 
     <div class="filters" role="group" aria-label="Filter tasks">
-      <button type="button" class="filter active" data-filter="all" aria-pressed="true">All</button>
-      <button type="button" class="filter" data-filter="active" aria-pressed="false">Active</button>
-      <button type="button" class="filter" data-filter="done" aria-pressed="false">Done</button>
+      <button type="button" class="filter active" data-filter="all" aria-pressed="true">All <span class="count" id="count-all">0</span></button>
+      <button type="button" class="filter" data-filter="active" aria-pressed="false">Active <span class="count" id="count-active">0</span></button>
+      <button type="button" class="filter" data-filter="done" aria-pressed="false">Done <span class="count" id="count-done">0</span></button>
     </div>
 
     <ul id="task-list" class="task-list"></ul>

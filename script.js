@@ -1,5 +1,6 @@
 // To-Do List - plain JavaScript, tasks saved in the browser's localStorage
 const STORAGE_KEY = "todo-list-tasks";
+const FILTER_KEY = "todo-list-filter";
 
 const form = document.getElementById("task-form");
 const input = document.getElementById("task-input");
@@ -10,7 +11,27 @@ const clearDoneBtn = document.getElementById("clear-done");
 const filterButtons = document.querySelectorAll(".filter");
 
 let tasks = loadTasks();
-let currentFilter = "all";
+let currentFilter = loadFilter();
+
+function loadFilter() {
+  try {
+    const f = localStorage.getItem(FILTER_KEY);
+    return ["all", "active", "done"].includes(f) ? f : "all";
+  } catch (err) {
+    return "all";
+  }
+}
+
+function setFilter(filter) {
+  currentFilter = filter;
+  try { localStorage.setItem(FILTER_KEY, filter); } catch (err) { /* ignore */ }
+  filterButtons.forEach((b) => {
+    const isCurrent = b.dataset.filter === filter;
+    b.classList.toggle("active", isCurrent);
+    b.setAttribute("aria-pressed", isCurrent);
+  });
+  render();
+}
 
 // ---- Storage (wrapped in try/catch: some browsers block localStorage) ----
 function loadTasks() {
@@ -131,10 +152,15 @@ function render() {
   });
 
   emptyMessage.hidden = visible.length !== 0;
-  emptyMessage.textContent = tasks.length === 0 ? "No tasks yet. Add one above!" : "No tasks in this view.";
+  if (tasks.length === 0) emptyMessage.textContent = "No tasks yet. Add one above!";
+  else if (currentFilter === "active") emptyMessage.textContent = "Nothing left to do. Well done!";
+  else emptyMessage.textContent = "No finished tasks yet. Tick a task to mark it done.";
 
   const left = tasks.filter((t) => !t.done).length;
   const doneCount = tasks.length - left;
+  document.getElementById("count-all").textContent = tasks.length;
+  document.getElementById("count-active").textContent = left;
+  document.getElementById("count-done").textContent = doneCount;
   counter.textContent = tasks.length ? `${left} task${left === 1 ? "" : "s"} left` : "";
   clearDoneBtn.hidden = doneCount === 0;
 }
@@ -153,14 +179,7 @@ form.addEventListener("submit", (e) => {
 });
 
 filterButtons.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    currentFilter = btn.dataset.filter;
-    filterButtons.forEach((b) => {
-      b.classList.toggle("active", b === btn);
-      b.setAttribute("aria-pressed", b === btn);
-    });
-    render();
-  });
+  btn.addEventListener("click", () => setFilter(btn.dataset.filter));
 });
 
 clearDoneBtn.addEventListener("click", clearDone);
@@ -173,4 +192,4 @@ window.addEventListener("storage", (e) => {
   }
 });
 
-render();
+setFilter(currentFilter);
