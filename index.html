@@ -4,123 +4,34 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>To-Do List</title>
-  <meta name="description" content="A simple to-do list with due dates, priorities, categories, subtasks and reminders. Saved in your browser.">
-  <!-- Set the colour theme before the page draws, so it doesn't flash white in dark mode -->
-  <script>
-    (function () {
-      var theme = null;
-      try { theme = localStorage.getItem("todo-list-theme"); } catch (e) {}
-      if (theme !== "dark" && theme !== "light") {
-        theme = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-      }
-      document.documentElement.dataset.theme = theme;
-    })();
-  </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=5">
+  <meta name="description" content="A simple to-do list: add, finish and delete tasks. Saved in your browser.">
+  <link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
   <main class="app">
-    <header class="app-header">
-      <div>
-        <h1>To-Do List</h1>
-        <p id="today" class="today"></p>
-      </div>
-      <div class="header-actions">
-        <button type="button" id="reminders-btn" class="icon-btn round" aria-label="Turn on reminders" title="Turn on reminders"></button>
-        <button type="button" id="theme-toggle" class="icon-btn round" aria-label="Switch to dark mode" title="Switch to dark mode"></button>
-      </div>
-    </header>
+    <h1>To-Do List</h1>
 
-    <section class="progress" aria-label="Progress">
-      <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-bar">
-        <span id="progress-fill"></span>
-      </div>
-      <p id="progress-text" class="progress-text">No tasks yet</p>
-    </section>
-
-    <form id="task-form" class="task-form" autocomplete="off">
-      <div class="add-row">
-        <label for="task-input" class="visually-hidden">New task</label>
-        <input id="task-input" type="text" placeholder="What do you need to do?" maxlength="200">
-        <button type="submit" class="primary-btn" id="add-btn">Add</button>
-      </div>
-      <div class="add-options">
-        <label class="field">
-          <span>Due date</span>
-          <input id="new-due" type="date">
-        </label>
-        <label class="field">
-          <span>Time</span>
-          <input id="new-time" type="time">
-        </label>
-        <label class="field">
-          <span>Priority</span>
-          <select id="new-priority">
-            <option value="high">High</option>
-            <option value="medium" selected>Medium</option>
-            <option value="low">Low</option>
-          </select>
-        </label>
-        <label class="field">
-          <span>Category</span>
-          <select id="new-category"></select>
-        </label>
-        <label class="field">
-          <span>Repeat</span>
-          <select id="new-repeat"></select>
-        </label>
-      </div>
+    <form id="task-form" class="task-form">
+      <label for="task-input" class="visually-hidden">New task</label>
+      <input id="task-input" type="text" placeholder="What do you need to do?" maxlength="200" autocomplete="off" required>
+      <button type="submit">Add</button>
     </form>
 
-    <section class="toolbar" aria-label="Find and filter tasks">
-      <div class="search-box">
-        <span class="search-icon" id="search-icon"></span>
-        <label for="search" class="visually-hidden">Search tasks</label>
-        <input id="search" type="search" placeholder="Search tasks  ( / )">
-      </div>
-      <label for="category-filter" class="visually-hidden">Filter by category</label>
-      <select id="category-filter"></select>
-    </section>
-
-    <div class="filters" role="group" aria-label="Filter tasks by status">
+    <div class="filters" role="group" aria-label="Filter tasks">
       <button type="button" class="filter active" data-filter="all" aria-pressed="true">All <span class="count" id="count-all">0</span></button>
       <button type="button" class="filter" data-filter="active" aria-pressed="false">Active <span class="count" id="count-active">0</span></button>
-      <button type="button" class="filter" data-filter="completed" aria-pressed="false">Completed <span class="count" id="count-completed">0</span></button>
+      <button type="button" class="filter" data-filter="done" aria-pressed="false">Done <span class="count" id="count-done">0</span></button>
     </div>
 
     <ul id="task-list" class="task-list"></ul>
 
-    <div id="empty-state" class="empty-state" hidden>
-      <div class="empty-emoji" id="empty-emoji">🎉</div>
-      <p class="empty-title" id="empty-title">Nothing to do</p>
-      <p class="empty-text" id="empty-text">Add your first task above.</p>
+    <p id="empty-message" class="empty">No tasks yet. Add one above!</p>
+    <div class="footer">
+      <p id="counter" class="counter"></p>
+      <button type="button" id="clear-done" class="clear-btn" hidden>Clear done</button>
     </div>
-
-    <footer class="app-footer">
-      <div class="footer-row">
-        <p id="counter" class="counter"></p>
-        <button type="button" id="clear-completed" class="text-btn" hidden>Clear completed</button>
-      </div>
-      <div class="footer-row data-row">
-        <button type="button" id="export-json" class="text-btn"></button>
-        <button type="button" id="export-csv" class="text-btn"></button>
-        <button type="button" id="import-btn" class="text-btn"></button>
-        <input type="file" id="import-file" accept=".json,.csv,application/json,text/csv" hidden>
-      </div>
-      <p class="shortcuts">
-        <kbd>Enter</kbd> add · <kbd>Esc</kbd> cancel · <kbd>/</kbd> search · <kbd>N</kbd> new task · double-click a task to edit · drag <span aria-hidden="true">⋮⋮</span> to reorder
-      </p>
-    </footer>
   </main>
 
-  <div id="toast" class="toast" role="status" aria-live="polite">
-    <span id="toast-text"></span>
-    <button type="button" id="toast-undo" class="toast-undo" hidden>Undo</button>
-  </div>
-
-  <script src="script.js?v=5"></script>
+  <script src="script.js?v=6"></script>
 </body>
 </html>
