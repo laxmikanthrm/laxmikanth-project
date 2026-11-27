@@ -3,6 +3,8 @@
 A simple to-do list web app built with plain HTML, CSS and JavaScript for the **CMPS 510 final project** (Project 1: To-Do List).
 
 **Live app:** https://laxmikanthrm.github.io/laxmikanth-project/
+**Report (PDF):** https://laxmikanthrm.github.io/laxmikanth-project/report/CMPS510_Final_Report_ToDo_List.pdf
+**Demo video (1 min):** https://laxmikanthrm.github.io/laxmikanth-project/report/demo.mp4
 
 ![Screenshot of the To-Do List app](screenshot.png)
 
@@ -31,6 +33,7 @@ Open `index.html` in any web browser. No installation or server is needed.
 | `index.html` | Page structure |
 | `style.css` | Styling and phone layout |
 | `script.js` | App logic: add, tick, edit, delete, filter, save to localStorage |
+| `report/` | Project report (PDF), use-case diagram and demo video |
 
 ## How it works
 - All tasks are kept in one array, `tasks`. Each task is `{ id, text, done }`.
